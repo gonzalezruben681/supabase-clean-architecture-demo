@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../core/either.dart';
+import '../../../../../core/presentation/router/routes.dart';
 import '../../../../../core/presentation/utils/validations_ext.dart';
 import '../../blocs/sign_in/sign_in_bloc.dart';
 import '../../blocs/sign_in/sign_in_state.dart';
@@ -14,6 +16,8 @@ class SignInScreen extends StatelessWidget with AuthFormMixin {
     return ChangeNotifierProvider(
       create: (_) => SignInBloc(
         SignInState(),
+        authenticationRepository: context.read(),
+        sessionBloc: context.read(),
       ),
       builder: (context, _) {
         final bloc = context.read<SignInBloc>();
@@ -48,14 +52,14 @@ class SignInScreen extends StatelessWidget with AuthFormMixin {
                     ),
                     const SizedBox(height: 20),
                     Consumer<SignInBloc>(
-                      builder: (_, bloc, __) {
+                      builder: (context, bloc, __) {
                         final state = bloc.value;
 
                         return MaterialButton(
                           color: Colors.blue,
                           onPressed: state.email.isValidEmail &&
                                   state.password.isValidPassword
-                              ? () {}
+                              ? () => _submit(context)
                               : null,
                           child: const Text('Sign In'),
                         );
@@ -63,7 +67,7 @@ class SignInScreen extends StatelessWidget with AuthFormMixin {
                     ),
                     const SizedBox(height: 20),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () => const SingUpRoute().push(context),
                       child: const Text('Create a new account'),
                     ),
                   ],
@@ -74,5 +78,20 @@ class SignInScreen extends StatelessWidget with AuthFormMixin {
         );
       },
     );
+  }
+
+  Future<void> _submit(BuildContext context) async {
+    final result = await context.read<SignInBloc>().submit();
+    if (!context.mounted) return;
+    switch (result) {
+      case Right():
+        ToDoRoute().go(context);
+      case Left():
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('ERROR'),
+          ),
+        );
+    }
   }
 }

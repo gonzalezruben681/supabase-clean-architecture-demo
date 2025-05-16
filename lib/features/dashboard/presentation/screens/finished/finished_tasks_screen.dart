@@ -13,7 +13,11 @@ class FinishedTasksScreen extends StatelessWidget {
       create: (_) => FinishedTasksBloc(
         const FinishedTasksState.loading(),
       ),
-      child: Material(),
+      child: const Material(
+        child: Center(
+          child: Text('Finished Tasks'),
+        ),
+      ),
     );
   }
 }

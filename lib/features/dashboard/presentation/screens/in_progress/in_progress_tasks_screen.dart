@@ -13,7 +13,11 @@ class InProgressTasksScreen extends StatelessWidget {
       create: (_) => InProgressTasksBloc(
         const InProgressTasksState.loading(),
       ),
-      child: Material(),
+      child: const Material(
+        child: Center(
+          child: Text('In Progress Tasks'),
+        ),
+      ),
     );
   }
 }

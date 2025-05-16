@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-class User extends Equatable {
-  const User({
+class Usuario extends Equatable {
+  const Usuario({
     required this.id,
     required this.name,
   });
 
   final String id;
-  final String name;
+  final Map<String,dynamic> name;
 
   @override
   List<Object?> get props => [id, name];

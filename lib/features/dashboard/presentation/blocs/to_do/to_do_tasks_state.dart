@@ -11,4 +11,5 @@ sealed class ToDoTasksState with _$ToDoTasksState {
   const factory ToDoTasksState.loaded({
     required List<Task> task,
   }) = ToDoTasksLoadedState;
+
 }

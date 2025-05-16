@@ -13,7 +13,11 @@ class ToDoTasksScreen extends StatelessWidget {
       create: (_) => ToDoTasksBloc(
         const ToDoTasksState.loading(),
       ),
-      child: Material(),
+      child: const Material(
+        child: Center(
+          child: Text('To Do Tasks'),
+        ),
+      ),
     );
   }
 }
